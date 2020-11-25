@@ -35,6 +35,9 @@ def player_input():
             print('Вы ввели неправильные координаты.\nВведите их еще раз!')
             print()
             continue
+        elif not (coordinats[0].isdigit() and coordinats[1].isdigit()):
+            print('Вы ввели символы а не цифры')
+            continue
 
         if board[x][y] != underscore:
             print('Эта клеточка уже занята!')
