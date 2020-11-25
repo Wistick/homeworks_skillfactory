@@ -27,6 +27,9 @@ def player_input():
             print('Вы ввели неправильные координаты.\nВведите их через пробел.')
             print()
             continue
+        elif not (coordinats[0].isdigit() and coordinats[1].isdigit()):
+            print('Вы ввели символы а не цифры')
+            continue
 
         x, y = coordinats
         x, y = int(x), int(y)
