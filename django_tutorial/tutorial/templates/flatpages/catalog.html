@@ -1,0 +1,14 @@
+{% extends 'flatpages/default.html' %}
+
+<!--Сюда хочу добавить style.css-->
+
+<head>
+    {% block title %} Catalog {% endblock title %}
+</head>
+
+<body>
+    {% block content %}
+    <h1>Catalog</h1>
+    <h3>{{ flatpage.content }}<br>{{ flatpage.content }}</h3>
+    {% endblock content %}
+</body>
