@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Flappy {% endblock title %}</title>
+
+</head>
+<body>
+    {% block content %}
+    <h1>Flappy</h1>
+    <h3 style="color:red;">{{ flatpage.content }}</h3>
+    {% endblock content %}
+
+</body>
+</html>
