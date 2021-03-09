@@ -20,17 +20,22 @@ class Author(models.Model):
         суммарный рейтинг всех комментариев автора;
         суммарный рейтинг всех комментариев к статьям автора.
         """
+        sum_post = 0
+        post = Post.objects.filter(post_author=self).values('post_rating')
+        for i in post:
+            sum_post = sum_post + i.get('post_rating') * 3
 
-        posts_author = Post.objects.filter(post_author=self.author_user)
-        post_rating = sum([r.post_rating for r in posts_author])
-        print(post_rating)
-        comment_rating = sum([r.comment_rating for r in Comment.objects.filter(comment_author=self.author_user)])
-        print(comment_rating)
+        sum_comment = 0
+        comment = Comment.objects.filter(comment_author=self.author_user).values('comment_rating')
+        for i in comment:
+            sum_comment = sum_comment + i.get('comment_rating')
 
-        likes_author_comment_sum = sum([r.comment_rating for r in Comment.objects.filter(comment_post__in=posts_author)])
-        print(likes_author_comment_sum)
-        self.rating = post_rating + comment_rating + likes_author_comment_sum
-        print(self.rating)
+        sum_post_comment = 0
+        post_comment = Comment.objects.filter(comment_post__post_author=self).values('comment_rating')
+        for i in post_comment:
+            sum_post_comment = sum_post_comment + i.get('comment_rating')
+
+        self.author_rating = sum_post + sum_comment + sum_post_comment
         self.save()
 
     def __str__(self):

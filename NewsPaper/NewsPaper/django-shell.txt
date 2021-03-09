@@ -1,0 +1,88 @@
+from accounts.models import User
+from news.models import Author, Category, Post, PostCategory, Comment
+
+User.objects.create(username='foo', first_name='Mark')
+User.objects.create(username='bar', first_name='Gustav')
+
+foo = Author.objects.create(author_user=User.objects.get(username='foo'))
+bar = Author.objects.create(author_user=User.objects.get(username='bar'))
+
+programming = Category.objects.create(category_name='Programming')
+soft = Category.objects.create(category_name='Soft')
+computers = Category.objects.create(category_name='Computers')
+hardware = Category.objects.create(category_name='Hardware')
+
+a1 = Post.objects.create(post_author=foo, choice_field='AR', title='Django 3 is awesome!', text='Queryset of Django')
+a2 = Post.objects.create(post_author=foo, choice_field='AR', title='Photoshop new version', text='Changelog')
+n1 = Post.objects.create(post_author=bar, choice_field='NE', title='ARM is better CISC?', text='Apple is making revolution') 
+
+a1.post_category.add(programming)
+a2.post_category.add(soft)
+n1.post_category.add(hardware)
+
+c1 = Comment.objects.create(comment_post=a1, comment_author=User.objects.get(username='bar'), text='WoW! U r right like never before, mate!')
+c2 = Comment.objects.create(comment_post=a2, comment_author=User.objects.get(username='bar'), text='I hope that they fixed dat stupid bag...')
+c3 = Comment.objects.create(comment_post=n1, comment_author=User.objects.get(username='foo'), text='Did you see the performance already?')
+c4 = Comment.objects.create(comment_post=a1, comment_author=User.objects.get(username='bar'), text='I am getting it...')
+
+a1.like()
+a1.like()
+a1.like()
+a1.like()
+a1.dislike()
+
+a2.like()
+a2.like()
+a2.like()
+a2.like()
+a2.dislike()
+a2.dislike()
+
+n1.like()
+n1.like()
+n1.like()
+n1.like()
+n1.like()
+n1.like()
+n1.like()
+n1.dislike()
+n1.dislike()
+n1.dislike()
+n1.dislike()
+
+c1.like()
+
+c2.like()
+
+c3.like()
+
+c4.like()
+c4.like()
+c4.dislike()
+
+Author.objects.get(author_user=User.objects.get(username='foo')).update_rating()
+Author.objects.get(author_user=User.objects.get(username='foo')).author_rating
+
+Author.objects.get(author_user=User.objects.get(username='bar')).update_rating()
+Author.objects.get(author_user=User.objects.get(username='bar')).author_rating
+
+top = Author.objects.all().order_by('-author_rating').values('author_user', 'author_rating')[0]
+top['author_user'] = Author.objects.all().order_by('-author_rating')[0].author_user.username
+print(top)
+
+top_post = Post.objects.all().order_by('-post_rating').values('time_created', 'post_author', 'post_rating', 'title')[0]
+top_post['time_created'] = top_post['time_created'].strftime("%A, %d. %B %Y %I:%M%p")
+top_post['post_author'] = Post.objects.all().order_by('-post_rating')[0].post_author.author_user.username
+top_post['preview'] = Post.objects.all().order_by('-post_rating')[0].preview()
+print(top_post)
+
+comments = Comment.objects.filter(comment_post=Post.objects.get(title='Django 3 is awesome!')).values('time_created', 'comment_author', 'text', 'comment_rating'
+
+
+for comment in comments:
+    comment['time_created'] = comment['time_created'].strftime("%A, %d. %B %Y %I:%M%p")
+    comment['comment_author'] = Author.objects.get(author_user=comment['comment_author']).author_user.username
+    print(comment)
+
+
+
