@@ -81,7 +81,7 @@ class Post(models.Model):
         choices=POST_CHOICES,
         default=news
     )
-    time_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')  # default=timezone.now
+    time_created = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     post_category = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     text = models.TextField('Напишите сюда свой текст вашей статьи')
@@ -109,7 +109,7 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        return f'{self.post_author}'
+        return f'{self.post_author} - {self.title} - {self.text} - {self.post_category.all()}'
 
 
 class PostCategory(models.Model):
