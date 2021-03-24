@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Мои установленные приложения
+    'django_filters',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',

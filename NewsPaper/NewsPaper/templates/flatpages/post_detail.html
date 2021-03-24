@@ -1,0 +1,35 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Post detail {% endblock title %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <td>
+            <b>Title</b>
+        </td>
+        <td>
+            <b>Date of publication</b>
+        </td>
+        <td>
+            <b>Text</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{ new.title|censor }}
+        </td>
+        <td>
+            {{ new.time_created.day }} / {{ new.time_created.month }} / {{ new.time_created.year }}
+        </td>
+        <td>
+            {% with text=new.text|truncatechars:50 %}
+            {{ new.text|censor }}
+            {% endwith %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

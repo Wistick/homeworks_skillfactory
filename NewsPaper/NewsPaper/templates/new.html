@@ -6,7 +6,7 @@
 {% block content %}
     <h1>Подробная информация о новости по заданию</h1>
     <hr>
-    <h3>Автор текста: {{ new.post_author }}</h3>
-    <h3>Заголовок: {{ new.title|censor }} - Дата публикации: {{ new.time_created.day }}-{{ new.time_created.month }}-{{ new.time_created.year }} {{ new.time_created.hour }}:{{ new.time_created.minute }} </h3>
-    <h3>Текст статьи: {{ new.text|censor }}</h3>
+    <h3>Text Author: {{ new.post_author }}</h3>
+    <h3>Title: {{ new.title|censor }} - Date of publication: {{ new.time_created.day }}-{{ new.time_created.month }}-{{ new.time_created.year }} {{ new.time_created.hour }}:{{ new.time_created.minute }} </h3>
+    <h3>Text: {{ new.text|censor }}</h3>
 {% endblock content %}

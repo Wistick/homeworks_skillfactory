@@ -1,0 +1,48 @@
+{% extends 'flatpages/default.html' %}
+
+{% load filters %}
+
+{% block title %} Post detail {% endblock title %}
+
+{% block content %}
+<h2>Are you sure you want to delete this post?</h2>
+<br>
+<table>
+     <thead>
+        <th>
+            <b>Author</b>
+        </th>
+        <th>
+            <b>Title</b>
+        </th>
+        <th>
+            <b>Date of publication</b>
+        </th>
+        <th>
+            <b>Text</b>
+        </th>
+     </thead>
+    <tr>
+        <td>
+            {{ post.post_author }}
+        </td>
+        <td>
+            {{ post.title|censor }}
+        </td>
+        <td>
+            {{ post.time_created.day }} / {{ post.time_created.month }} / {{ post.time_created.year }}
+        </td>
+        <td>
+            {% with text=post.text|truncatechars:50 %}
+            {{ post.text|censor }}
+            {% endwith %}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock content %}
