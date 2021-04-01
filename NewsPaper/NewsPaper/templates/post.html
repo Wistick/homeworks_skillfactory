@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+{% load filters %}
+
+{% block title %} News {% endblock title %}
+
+{% block content %}
+    <h1>Подробная информация о новости по заданию</h1>
+    <hr>
+    <h3>Text Author: {{ post.post_author }}</h3>
+    <h3>Title: {{ post.title|censor }} - Date of publication: {{ post.time_created.day }}-{{ post.time_created.month }}-{{ post.time_created.year }} {{ new.time_created.hour }}:{{ new.time_created.minute }} </h3>
+    <h3>Text: {{ post.text|censor }}</h3>
+{% endblock content %}

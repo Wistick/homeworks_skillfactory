@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
@@ -11,7 +12,7 @@ from datetime import datetime
 
 class PostList(ListView):
     model = Post
-    template_name = 'news.html'
+    template_name = 'posts.html'
     context_object_name = 'news'
     queryset = Post.objects.order_by('-id')
     paginate_by = 10
@@ -35,8 +36,8 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'new.html'
-    context_object_name = 'new'
+    template_name = 'post.html'
+    context_object_name = 'post'
 
 
 class PostDetailView(DetailView):
@@ -44,24 +45,31 @@ class PostDetailView(DetailView):
     queryset = Post.objects.all()
 
 
-class PostCreateView(CreateView):
+class PostCreateView(PermissionRequiredMixin, CreateView):
     template_name = 'flatpages/post_create.html'
     form_class = PostForm
+    login_url = '/accounts/login'
+    permission_required = 'news.add_post'
+    model = Post
+    queryset = Post.objects.all()
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'flatpages/post_create.html'
     form_class = PostForm
+    permission_required = 'news.change_post'
+    success_url = '/news/'
 
     def get_object(self, **kwargs):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'flatpages/post_delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+    permission_required = 'news.delete_post'
 
 
 class PostPageFilter(ListView):
@@ -73,5 +81,3 @@ class PostPageFilter(ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
         return context
-
-

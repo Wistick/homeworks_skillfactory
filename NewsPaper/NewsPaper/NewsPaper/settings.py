@@ -14,7 +14,7 @@ SECRET_KEY = 'hmxesk+!sjcsg9+f&y(sj@*g7k#5asvtulpg)opcniczrfk*!%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']  # ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -27,14 +27,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # allauth - приложения для формы регистрации
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to enable:
+    'allauth.socialaccount.providers.google',
+
     # Мои установленные приложения
     'django_filters',
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',
     'news',
-    'accounts',
-    'mcdonalds',
+    'sign',
+    'protect',
 ]
 
 # создаем переменную, айди сайта, обычно ставится = 1
@@ -71,7 +78,15 @@ TEMPLATES = [
     },
 ]
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 
@@ -128,3 +143,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+LOGIN_URL = 'accounts/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}

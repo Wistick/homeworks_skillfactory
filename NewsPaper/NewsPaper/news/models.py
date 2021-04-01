@@ -1,19 +1,13 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 
 class Author(models.Model):
-    author_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     author_rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        """
-        Метод update_rating() модели Author, который обновляет рейтинг пользователя, переданный в аргумент этого метода.
-        Он состоит из следующего:
-        суммарный рейтинг каждой статьи автора умножается на 3;
-        суммарный рейтинг всех комментариев автора;
-        суммарный рейтинг всех комментариев к статьям автора.
-        """
+
         sum_post = 0
         post = Post.objects.filter(post_author=self).values('post_rating')
         for i in post:
@@ -92,7 +86,7 @@ class PostCategory(models.Model):
 
 class Comment(models.Model):
     comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    comment_author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment_author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(null=False)
     time_created = models.DateTimeField(auto_now_add=True)  # default=timezone.now
     comment_rating = models.IntegerField(default=0)
